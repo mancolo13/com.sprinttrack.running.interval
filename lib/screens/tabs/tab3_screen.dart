@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../services/routing_service.dart';
 
-class Tab3Screen extends StatefulWidget {
+class Tab3Screen extends StatelessWidget {
   const Tab3Screen({super.key});
 
   @override
-  State<Tab3Screen> createState() => _Tab3ScreenState();
-}
-
-class _Tab3ScreenState extends State<Tab3Screen> {
-  int _counter = 65;
-  bool _active = true;
-
-  @override
   Widget build(BuildContext context) {
+    final days = [
+      {'d': 'Mon', 'km': 6.2, 'h': 70.0},
+      {'d': 'Tue', 'km': 0.0, 'h': 0.0},
+      {'d': 'Wed', 'km': 8.5, 'h': 95.0},
+      {'d': 'Thu', 'km': 5.0, 'h': 55.0},
+      {'d': 'Fri', 'km': 10.4, 'h': 120.0},
+      {'d': 'Sat', 'km': 0.0, 'h': 0.0},
+      {'d': 'Sun', 'km': 14.2, 'h': 150.0},
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SprintTrack • Burn', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: const Text('Weekly Mileage', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         backgroundColor: AppTheme.surface,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.stars_rounded, color: AppTheme.primary),
-            tooltip: 'Special Registration Offer',
-            onPressed: () => RoutingService.openRegistrationUrl(),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -37,86 +31,37 @@ class _Tab3ScreenState extends State<Tab3Screen> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.card,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.35)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Burn Dashboard',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-                      ),
-                      Icon(Icons.local_fire_department, color: AppTheme.primary, size: 28),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '540',
-                    style: const TextStyle(fontSize: 44, fontWeight: FontWeight.w900, color: AppTheme.primary),
-                  ),
-                  const Text('Kcal Burned', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => setState(() => _counter += 5),
-                        icon: const Icon(Icons.bolt),
-                        label: Text('Sync Calories (\$_counter)'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, foregroundColor: Colors.black),
-                      ),
-                      const SizedBox(width: 12),
-                      OutlinedButton.icon(
-                        onPressed: () => setState(() => _active = !_active),
-                        icon: Icon(_active ? Icons.check_circle : Icons.pause),
-                        label: Text(_active ? 'Active' : 'Paused'),
-                        style: OutlinedButton.styleFrom(foregroundColor: AppTheme.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              color: AppTheme.surface,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: AppTheme.primary.withValues(alpha: 0.2),
-                  child: const Icon(Icons.emoji_events, color: AppTheme.primary),
-                ),
-                title: const Text('Exclusive Registration Offer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                subtitle: const Text('Access exclusive features and personalized rewards', style: TextStyle(fontSize: 12)),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.primary),
-                onTap: () => RoutingService.openRegistrationUrl(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Activity Stream & Log', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 12),
-                  for (int i = 1; i <= 3; i++) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('SprintTrack Log #$i', style: const TextStyle(color: AppTheme.textSecondary)),
-                        Text('Synced ${i * 10}m ago', style: const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    if (i < 3) const Divider(height: 16, color: Colors.white12),
-                  ],
+                  const Text('TOTAL THIS WEEK', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  const Text('44.3 km', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppTheme.primary)),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: days.map((d) {
+                      final h = d['h'] as double;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 24,
+                            height: h > 0 ? h : 4,
+                            decoration: BoxDecoration(
+                              color: h > 0 ? AppTheme.primary : Colors.white12,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(d['d'] as String, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
